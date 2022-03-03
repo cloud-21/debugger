@@ -3,6 +3,7 @@
 echarts版本: 3.8.5
 折线图填充，y轴最小值是负数，填充的部分总是到0这个值，不到底，下面还有负数。
 图片----
+![问题图](https://github.com/cloud-21/debugger/blob/main/echarts/%E9%97%AE%E9%A2%98%E5%9B%BE.png)
 ### 怎么解决
 #### 1.更新到最低4.0.0版本，加上areaStyle.origin : 'start'
 #### 2.利用formatter调整刻度让它最小是0，也就是data中的最小负数，加上它的绝对值变成0，其他数据也加上这个绝对值，从而整体抬高；然后刻度也用formatter这样操作，如此解决此问题。
@@ -62,4 +63,4 @@ echarts版本: 3.8.5
           }
         ]
 `
-完整代码见github地址: [百度](http://baidu.com)
+完整代码见github地址: [github](https://github.com/cloud-21/debugger/blob/main/echarts/area-basic.html)
