@@ -1,0 +1,65 @@
+## 解决方案
+### 问题描述
+echarts版本: 3.8.5
+折线图填充，y轴最小值是负数，填充的部分总是到0这个值，不到底，下面还有负数。
+图片----
+### 怎么解决
+#### 1.更新到最低4.0.0版本，加上areaStyle.origin : 'start'
+#### 2.利用formatter调整刻度让它最小是0，也就是data中的最小负数，加上它的绝对值变成0，其他数据也加上这个绝对值，从而整体抬高；然后刻度也用formatter这样操作，如此解决此问题。
+###代码如下
+`
+
+      var mainMinValue = 0
+      var findMinValue = function (arr) {
+        let minValue = arr[0]
+        arr.forEach(i => {
+          if (i < minValue) minValue = i
+        });
+        mainMinValue = minValue
+        return minValue 
+      }
+    
+      var seriesDataWrapper = function(arr) {
+        let min = findMinValue(arr)
+        if(min >= 0 ) return
+        const absMin = Math.abs(min)
+        let newArr = arr.map(i => i + absMin)
+        return newArr
+      }
+
+        yAxis: {
+          type: 'value',
+          scale: true,
+          min: 0,
+          // max:1000,
+          axisTick: {
+            alignWithLabel: true
+          },
+          axisLine: {
+            onZero: false
+          },
+          axisLabel:{
+            formatter:function(value, index) {
+              return value + mainMinValue
+            }
+          }
+        },
+        series: [
+          {
+            data: seriesDataWrapper([-820, 932, -301, 934, 590, 1330, 1120]),
+            type: 'line',
+            smooth: true,
+
+            areaStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: "red" },
+                  { offset: 1, color: "black" }
+                ]),
+              }
+            }, //填充区域样式
+
+          }
+        ]
+`
+完整代码见github地址: [百度](http://baidu.com)
